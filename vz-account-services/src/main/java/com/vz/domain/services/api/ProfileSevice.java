@@ -43,28 +43,40 @@ public class ProfileSevice {
 
 	@GetMapping("/v1/profiles")
 	public List<CustomerProfile> getProfiles() {
-		return customerProfileRepository.findAll();
+		logger.info("Request received for /v1/profiles");	
+		List<CustomerProfile> response = customerProfileRepository.findAll();
+		logger.info("response : {}",response);
+		return response;
 	}
 	
 	@GetMapping("/v1/profile/{id}")
 	public CustomerProfile getProfile(@PathVariable long id) {
+		logger.info("Request received for /v1/profiles/{}",id);	
 		Optional<CustomerProfile> customerProfile = customerProfileRepository.findById(id);
 		if(customerProfile.isPresent()) {
-			customerProfile.get().setApplicationPort(environment.getProperty("local.server.port"));
-			return customerProfile.get();
+			CustomerProfile response = customerProfile.get();
+			response.setApplicationPort(environment.getProperty("local.server.port"));
+			logger.info("response : {}",response);
+			return response;
 		}
 		throw new UserNotFoundException("User not found"); 
 	}
 	
 	@PostMapping("/v1/profile")
 	public CustomerProfile createProfiles(@RequestBody CustomerProfile customerProfile) {
-		return customerProfileRepository.save(customerProfile);
+		logger.info("Request received for POST /v1/profiles");	
+		CustomerProfile response = customerProfileRepository.save(customerProfile);
+		logger.info("response : {}",response);
+		return response;
 	}
 	
 	@PostMapping("/v1/profile/{id}")
 	public CustomerProfile updateProfile(@RequestBody CustomerProfile customerProfile) {
+		logger.info("Request received for POST /v1/profiles/{}",customerProfile.getId());	
 		if(customerProfileRepository.existsById(customerProfile.getId())) {
-			return customerProfileRepository.save(customerProfile);	
+			CustomerProfile response = customerProfileRepository.save(customerProfile);	
+			logger.info("response : {}",response);
+			return response;	
 		}
 		throw new UserNotFoundException("User doesn't exist");
 	}

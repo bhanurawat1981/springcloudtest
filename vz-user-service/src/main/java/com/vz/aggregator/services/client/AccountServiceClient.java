@@ -17,7 +17,6 @@ import com.vz.aggregator.services.entity.CustomerProfile;
  * @author bharawat
  *
  */
-//@FeignClient(name="vz-account-services", url="localhost:8001")
 @FeignClient(name="vz-zuul-service")
 @RibbonClient(name="vz-account-services")
 public interface AccountServiceClient {
